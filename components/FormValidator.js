@@ -40,7 +40,7 @@ class FormValidator {
   };
 
   _toggleButtonState = () => {
-    if (this._hasInvalidInput(this._inputList)) {
+    if (this._hasInvalidInput()) {
       this._buttonElement.classList.add(this._inactiveButtonClass);
       this._buttonElement.disabled = true;
     } else {
@@ -62,7 +62,7 @@ class FormValidator {
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         this._checkInputValidity(inputElement);
-        this._toggleButtonState(this._inputList, this._settings);
+        this._toggleButtonState();
       });
     });
   };
@@ -75,9 +75,10 @@ class FormValidator {
   };
 
   resetValidation = () => {
+    this._formEl.reset(); // Thank you barsegyan! It makes sense why I ought to reset the form first, and I certainly did forget the toggleButtonState function.
+    this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement);
-      this._formEl.reset();
     });
   };
 }
