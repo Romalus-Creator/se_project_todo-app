@@ -4,6 +4,7 @@ import ToDo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import Popup from "../components/Popup.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -48,22 +49,42 @@ const section = new Section({
 
 section.renderItems(initialTodos);
 
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
+const newPopupWithForm = new PopupWithForm({
+  popupSelector: "#add-todo-popup",
+  handleFormSubmit: (inputValues) => {
+    const name = inputValues.name;
+    const dateValue = inputValues.date;
 
-  // Create a date object and adjust for timezone
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  const id = uuidv4();
+    const date = new Date(dateValue);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    const id = uuidv4();
 
-  const values = { name, date, id };
-  const todo = generateTodo(values);
-  section.addItem(todo);
-  popup.closeModal();
-  formValidator.resetValidation();
+    const values = { name, date, id };
+    const todo = generateTodo(values);
+    section.addItem(todo);
+    popup.closeModal();
+    formValidator.resetValidation();
+  },
 });
+
+newPopupWithForm.setEventListeners();
+
+// addTodoForm.addEventListener("submit", (evt) => {
+//   evt.preventDefault();
+//   const name = evt.target.name.value;
+//   const dateInput = evt.target.date.value;
+
+//   // Create a date object and adjust for timezone
+//   const date = new Date(dateInput);
+//   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+//   const id = uuidv4();
+
+//   const values = { name, date, id };
+//   const todo = generateTodo(values);
+//   section.addItem(todo);
+//   popup.closeModal();
+//   formValidator.resetValidation();
+// });
 
 const formValidator = new FormValidator(validationConfig, addTodoForm);
 formValidator.enableValidation();

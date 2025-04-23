@@ -1,7 +1,7 @@
 export default class Popup {
   constructor(popupSelector) {
-    this._popupSelector = document.querySelector(popupSelector);
-    this._popupCloseBtn = this._popupSelector.querySelector(".popup__close");
+    this._popupElement = document.querySelector(popupSelector);
+    this._popupCloseBtn = this._popupElement.querySelector(".popup__close");
   }
 
   _handleEscapeClose(evt) {
@@ -12,13 +12,13 @@ export default class Popup {
   }
 
   openModal() {
-    this._popupSelector.classList.add("popup_visible");
+    this._popupElement.classList.add("popup_visible");
     document.addEventListener("keydown", (evt) => this._handleEscapeClose(evt));
     // The open() method should be called in the preexisting event handlers in index.js.
   }
 
   closeModal() {
-    this._popupSelector.classList.remove("popup_visible");
+    this._popupElement.classList.remove("popup_visible");
     document.removeEventListener("keydown", (evt) =>
       this._handleEscapeClose(evt)
     );
