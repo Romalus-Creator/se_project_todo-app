@@ -1,25 +1,37 @@
 class ToDo {
-  constructor(data, selector) {
+  constructor(data, selector, countCheck, totalChecks, totalTodos) {
     this._data = data;
     this._templateElement = document.querySelector(selector);
+    this._countCheck = countCheck;
+    this._completed = data.completed;
+    this._totalChecks = totalChecks;
+    this._totalTodos = totalTodos;
   }
 
   _setEventListeners() {
     this._todoCheckboxEl.addEventListener("change", () => {
       this._data.completed = !this._data.completed;
+      this.toggleCompletion();
+      this._countCheck(this._completed);
     });
 
     this._todoDeleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
+      this._totalChecks(this._completed);
+      this._totalTodos(false);
     });
   }
 
   _generateCheckboxEl() {
     this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
     this._todoLabel = this._todoElement.querySelector(".todo__label");
-    this._todoCheckboxEl.checked = this._data.completed;
+    this._todoCheckboxEl.checked = this._completed;
     this._todoCheckboxEl.id = `todo-${this._data.id}`;
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
+  }
+
+  toggleCompletion() {
+    this._completed = !this._completed;
   }
 
   _getDueDate() {
