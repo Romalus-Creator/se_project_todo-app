@@ -3,9 +3,8 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import ToDo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
-import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
-import TodoCounter from "../TodoCounter.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -20,57 +19,44 @@ function countCheck(completed) {
   todoCounter.updateCompleted(completed);
 }
 
-function totalChecks(completed) {
+function incrementChecks(completed) {
   if (completed) {
     todoCounter.updateCompleted(false);
   }
 }
 
-function totalTodos(total) {
+function incrementTodos(total) {
   todoCounter.updateTotal(total);
 }
-
-// const openModal = (modal) => {
-//   modal.classList.add("popup_visible");
-// };
-
-// const closeModal = (modal) => {
-//   modal.classList.remove("popup_visible");
-// };
 
 const generateTodo = (data) => {
   const todo = new ToDo(
     data,
     "#todo-template",
     countCheck,
-    totalChecks,
-    totalTodos
+    incrementChecks,
+    incrementTodos
   );
   const todoElement = todo.getView();
   return todoElement;
 };
 
-const popup = new Popup("#add-todo-popup");
-popup.setEventListeners();
-
 addTodoButton.addEventListener("click", () => {
-  popup.openModal();
+  newPopupWithForm.openModal();
 });
 
-// addTodoCloseBtn.addEventListener("click", () => {
-//   popup.closeModal();
-// });
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  section.addItem(todo);
+};
 
 const section = new Section({
   items: initialTodos,
-  renderer: (item) => {
-    const todo = generateTodo(item);
-    section.addItem(todo);
-  },
+  renderer: renderTodo,
   containerSelector: ".todos__list",
 });
 
-section.renderItems(initialTodos);
+section.renderItems();
 
 const newPopupWithForm = new PopupWithForm({
   popupSelector: "#add-todo-popup",
@@ -83,12 +69,14 @@ const newPopupWithForm = new PopupWithForm({
     const id = uuidv4();
 
     const values = { name, date, id };
-    const todo = generateTodo(values);
-    section.addItem(todo);
-    popup.closeModal();
+    renderTodo(values);
+    // const todo = generateTodo(values);
+    // section.addItem(todo);
+    newPopupWithForm.closeModal();
     formValidator.resetValidation();
+    incrementTodos(true);
   },
-  totalTodos,
+  // incrementTodos,
 });
 
 newPopupWithForm.setEventListeners();

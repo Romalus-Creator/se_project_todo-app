@@ -1,11 +1,11 @@
 class ToDo {
-  constructor(data, selector, countCheck, totalChecks, totalTodos) {
+  constructor(data, selector, countCheck, incrementChecks, incrementTodos) {
     this._data = data;
     this._templateElement = document.querySelector(selector);
     this._countCheck = countCheck;
     this._completed = data.completed;
-    this._totalChecks = totalChecks;
-    this._totalTodos = totalTodos;
+    this._incrementChecks = incrementChecks;
+    this._incrementTodos = incrementTodos;
   }
 
   _setEventListeners() {
@@ -17,8 +17,8 @@ class ToDo {
 
     this._todoDeleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
-      this._totalChecks(this._completed);
-      this._totalTodos(false);
+      this._incrementChecks(this._completed);
+      this._incrementTodos(false);
     });
   }
 

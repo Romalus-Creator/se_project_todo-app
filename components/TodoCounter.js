@@ -31,15 +31,12 @@ export default class TodoCounter {
     // if increment is true, add 1 to this._total. Otherwise,
     // subtract 1. In either case, call the method to update the
     // text content.
-    console.log(increment);
     if (increment) {
       this._total += 1;
       this._updateText();
-      console.log(this._total);
     } else {
       this._total -= 1;
       this._updateText();
-      console.log(this._total);
     }
   };
 
