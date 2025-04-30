@@ -18,11 +18,10 @@ export default class TodoCounter {
 
     if (increment) {
       this._completed++;
-      this._updateText();
     } else {
       this._completed--;
-      this._updateText();
     }
+    this._updateText();
   };
 
   // Call this when a to-do is deleted, or when a to-do is
@@ -33,11 +32,10 @@ export default class TodoCounter {
     // text content.
     if (increment) {
       this._total += 1;
-      this._updateText();
     } else {
       this._total -= 1;
-      this._updateText();
     }
+    this._updateText();
   };
 
   // Call the method to update the text content
